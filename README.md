@@ -1,73 +1,102 @@
-# F1 API
+# Social Media API
 
-This is an API for managing F1 racers and teams.
+The Social Media API provides endpoints for managing users, posts, and comments in a social media platform.
+
+## Database Schema
+
+![Database Schema](dbScheme.png)
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+To get started with using the Formula 1, follow the steps below:
 
 ### Prerequisites
 
-- Go (version >= 1.15)
-- PostgreSQL
-- Git
+- Go programming language installed on your system.
+- PostgreSQL database installed and running.
 
-### Installing
+### Installation
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/your-username/f1api.git
-Navigate into the project directory:
+   ```
+   git clone <repository-url>
+   ```
 
-bash
-Copy code
-cd f1api
-Set up the PostgreSQL database:
+2. Install dependencies:
 
-Create a PostgreSQL database named f1.
-Update the db-dsn flag in main.go with your PostgreSQL connection details.
-Build and run the application:
+   ```
+   go mod tidy
+   ```
 
-bash
-Copy code
-go build
-./f1api
-API Endpoints
-POST /api/v1/racers: Create a new racer.
+3. Build the project:
 
-GET /api/v1/racers/{racerId}: Get a specific racer.
+   ```
+   go build
+   ```
 
-PUT /api/v1/racers/{racerId}: Update a specific racer.
+### Configuration
 
-DELETE /api/v1/racers/{racerId}: Delete a specific racer.
+The API can be configured using environment variables or command-line flags. Available configurations are:
 
-POST /api/v1/teams: Create a new team.
+- `PORT`: Port on which the server will listen. Default is `8081`.
+- `ENV`: Environment mode (`development`, `staging`, or `production`). Default is `development`.
+- `DB_DSN`: PostgreSQL database connection string.
 
-GET /api/v1/teams/{teamId}: Get a specific team.
+### Running the Server
 
-PUT /api/v1/teams/{teamId}: Update a specific team.
+Run the server using the following command:
 
-DELETE /api/v1/teams/{teamId}: Delete a specific team.
+```
+go run .
+```
 
-Deployment
-Add additional notes about how to deploy this on a live system.
+## API Endpoints
 
-Built With
-Go - The programming language used
-PostgreSQL - The database management system used
-Gorilla Mux - The HTTP router used
-Authors
-John Doe - Initial work - JohnDoe
-License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+The following endpoints are available in the API:
 
-sql
-Copy code
+### Users
 
-3. **Commit and push to git**: After writing the README content, save the changes to the `README.md` file, commit the changes, and push them to your git repository.
+- `GET /api/v1/racers`: Create racer.
+- `GET /api/v1/racers/{racerId}`: Get a racer by ID.
+- `PUT /api/v1/racers/{racerId}`: Update a racer by ID.
+- `DELETE /api/v1/racers/{racerId}`: Delete a racer by ID.
 
-   ```bash
-   git add README.md
-   git commit -m "Add README.md"
-   git push origin master
+### Posts
+
+- `POST /api/v1/teams`: Create a new team.
+- `GET /api/v1/teams/{teamId}`: Get a team by ID.
+- `PUT /api/v1/teams/{teamId}`: Update a team by ID.
+- `DELETE /api/v1/teams/{teamId}`: Delete a team by ID.
+
+
+## Error Handling
+
+The API follows standard HTTP status codes for indicating the success or failure of a request. Error responses include appropriate error messages to help troubleshoot issues.
+
+## Authentication
+
+Authentication is not implemented in this version of the API. All endpoints are accessible without authentication.
+
+
+## DB structure
+
+```
+Table teams {
+    id bigserial [primary key]
+    created_at timestamp [not null, default: `now()`]
+    updated_at timestamp [not null, default: `now()`]
+    name text [not null]
+    car text [not null]
+}
+
+Table racers {
+    id bigserial [primary key]
+    created_at timestamp [not null, default: `now()`]
+    updated_at timestamp [not null, default: `now()`]
+    firstName text [not null]
+    lastName text [not null]
+    teamId bigint [ref: > teams.id]
+}
+
+```
