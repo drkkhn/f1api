@@ -1,6 +1,6 @@
-# Social Media API
+# F1
 
-The Social Media API provides endpoints for managing users, posts, and comments in a social media platform.
+The F1 API provides endpoints for managing F1 teams, and racers.
 
 ## Database Schema
 
