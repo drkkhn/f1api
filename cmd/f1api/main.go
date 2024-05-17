@@ -45,7 +45,7 @@ func main() {
 		migrations = fs.String("migrations", "", "Path to migration files folder. If not provided, migrations do not applied")
 		port       = fs.Int("port", 8081, "API Server port")
 		env        = fs.String("env", "development", "Environment (development|staging|production)")
-		dbDsn      = fs.String("dsn", "postgres://postgres:0000@localhost/f1?sslmode=disable", "PostgreSQL DSN")
+		dbDsn      = fs.String("dsn", "postgres://f1api_db_user:tQRnoQbmADuyebQZswTQivWzsBNlKkNa@dpg-cp3gipgl6cac73f570q0-a.singapore-postgres.render.com/f1api_db", "PostgreSQL DSN")
 	)
 
 	// Init logger
