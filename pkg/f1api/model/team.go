@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"time"
 )
@@ -52,6 +53,37 @@ func (t TeamModel) Get(id int) (*Team, error) {
 		return nil, err
 	}
 	return &team, nil
+}
+
+func (t TeamModel) GetTeamRacers(id int) (*[]Racer, error) {
+	query := `
+		SELECT id, created_at, updated_at, firstname, lastname, teamid
+		FROM racers
+		WHERE teamid = $1
+		`
+	fmt.Println(id)
+	var racers []Racer
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	rows, err := t.DB.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var racer Racer
+		if err := rows.Scan(&racer.Id, &racer.CreatedAt, &racer.UpdatedAt, &racer.FirstName, &racer.LastName, &racer.TeamId); err != nil {
+			return nil, err
+		}
+		racers = append(racers, racer)
+	}
+	fmt.Println(racers)
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return &racers, nil
 }
 
 func (t TeamModel) Update(team *Team) error {
